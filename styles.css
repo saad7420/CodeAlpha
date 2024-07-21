@@ -1,49 +1,66 @@
 body {
-    font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
     background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
 }
 
-.gallery-container {
-    width: 80%;
-    max-width: 800px;
-    overflow: hidden;
-    position: relative;
-    background: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+.calculator {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.gallery {
-    display: flex;
-    transition: transform 0.5s ease;
+.display {
+    background-color: #222;
+    color: #fff;
+    text-align: right;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 2em;
 }
 
-.gallery img {
-    width: 100%;
-    height: auto;
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
 }
 
-.controls {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-}
-
-button {
-    background-color: #007bff;
-    color: white;
+.btn {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
     border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    border-radius: 5px;
+    font-size: 1.5em;
+    transition: background-color 0.3s;
 }
 
-button:hover {
-    background-color: #0056b3;
+.btn:hover {
+    background-color: #555;
+}
+
+#equal {
+    grid-column: span 4;
+    background-color: #ff9500;
+    color: #fff;
+}
+
+#equal:hover {
+    background-color: #ff7500;
+}
+
+#onOffButton {
+    grid-column: span 4;
+    background-color: #ff9500;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+#onOffButton:hover {
+    background-color: #ff7500;
 }

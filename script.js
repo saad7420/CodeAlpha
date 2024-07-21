@@ -1,67 +1,81 @@
-let currentIndex = 1;
+let display = document.getElementById('display');
+let currentInput = '';
+let operator = null;
+let previousInput = '';
+let isCalculatorOn = false;
 
-const gallery = document.querySelector('.gallery');
-const images = document.querySelectorAll('.gallery img');
-const totalImages = images.length;
-
-// Clone first and last images
-const firstClone = images[0].cloneNode(true);
-const lastClone = images[images.length - 1].cloneNode(true);
-
-// Add clones to the gallery
-gallery.appendChild(firstClone);
-gallery.insertBefore(lastClone, gallery.firstChild);
-
-function updateGallery() {
-    const width = gallery.clientWidth;
-    gallery.style.transition = 'transform 1s ease';
-    gallery.style.transform = `translateX(-${currentIndex * width}px)`;
+function toggleCalculator() {
+    if (isCalculatorOn) {
+        display.textContent = 'Saadi Calculator';
+        clearDisplay();
+    } else {
+        display.textContent = '0';
+    }
+    isCalculatorOn = !isCalculatorOn;
 }
 
-function showNextImage() {
-    const width = gallery.clientWidth;
-    if (currentIndex >= totalImages) {
-        gallery.style.transition = 'none';
-        currentIndex = 1;
-        gallery.style.transform = `translateX(-${currentIndex * width}px)`;
-        setTimeout(() => {
-            gallery.style.transition = 'transform 1s ease';
-            currentIndex++;
-            gallery.style.transform = `translateX(-${currentIndex * width}px)`;
-        }, 20);
-    } else {
-        currentIndex++;
-        updateGallery();
+function clearDisplay() {
+    if (isCalculatorOn) {
+        currentInput = '';
+        operator = null;
+        previousInput = '';
+        updateDisplay();
     }
 }
 
-function showPreviousImage() {
-    const width = gallery.clientWidth;
-    if (currentIndex <= 0) {
-        gallery.style.transition = 'none';
-        currentIndex = totalImages;
-        gallery.style.transform = `translateX(-${currentIndex * width}px)`;
-        setTimeout(() => {
-            gallery.style.transition = 'transform 1s ease';
-            currentIndex--;
-            gallery.style.transform = `translateX(-${currentIndex * width}px)`;
-        }, 20);
-    } else {
-        currentIndex--;
-        updateGallery();
+function deleteDigit() {
+    if (isCalculatorOn) {
+        currentInput = currentInput.slice(0, -1);
+        updateDisplay();
     }
 }
 
-function startLoop() {
-    setInterval(showNextImage, 7000); // Change image every 7 seconds
+function appendDigit(digit) {
+    if (isCalculatorOn && currentInput.length < 15) {
+        currentInput += digit;
+        updateDisplay();
+    }
 }
 
-document.getElementById('next').addEventListener('click', showNextImage);
-document.getElementById('prev').addEventListener('click', showPreviousImage);
+function appendOperator(op) {
+    if (isCalculatorOn && currentInput !== '') {
+        if (operator === null) {
+            previousInput = currentInput;
+            currentInput = '';
+        }
+        operator = op;
+        updateDisplay();
+    }
+}
 
-window.addEventListener('load', () => {
-    const width = gallery.clientWidth;
-    gallery.style.transform = `translateX(-${currentIndex * width}px)`;
-    startLoop();
-    window.addEventListener('resize', updateGallery);
-});
+function calculate() {
+    if (isCalculatorOn && operator !== null && currentInput !== '') {
+        let result;
+        let prev = parseFloat(previousInput);
+        let current = parseFloat(currentInput);
+        switch (operator) {
+            case '+':
+                result = prev + current;
+                break;
+            case '-':
+                result = prev - current;
+                break;
+            case '*':
+                result = prev * current;
+                break;
+            case '/':
+                result = prev / current;
+                break;
+        }
+        currentInput = result.toString();
+        operator = null;
+        previousInput = '';
+        updateDisplay();
+    }
+}
+
+function updateDisplay() {
+    if (isCalculatorOn) {
+        display.textContent = currentInput || '0';
+    }
+}
